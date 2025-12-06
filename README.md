@@ -43,34 +43,22 @@ void main() {
   final map = <Uuid7, String>{uuid: 'my value'};
   print(map[uuid]); // 'my value'
 
+  // Create from raw bytes without validation
+
+  final bytes = Uint8List.fromList([
+    0x01, 0x23, 0x45, 0x67,
+    0x89, 0xAB,
+    0x7C, 0xDE, // version 7 in high nibble
+    0x8F, 0x00, // variant 0b10xxxxxx
+    0x11, 0x22, 0x33, 0x44, 0x55, 0x66,
+  ]);
+  final uuid_from_raw = Uuid7.raw(bytes);
+
   // Access raw bytes (copy)
   final raw = uuid.bytes;
   print(raw); // Uint8List(16) [...]
 }
 ```
-
----
-
-## API reference
-
-### `class Uuid7`
-
-| Constructor | Description |
-|-------------|-------------|
-| `Uuid7(this._data)` | Private; creates a UUID from an existing 16‑byte buffer. |
-| `Uuid7.gen()` | Generates a new UUID v7 using the current timestamp and secure random bytes. |
-
-| Static method | Description |
-|---------------|-------------|
-| `static Uuid7? fromString(String uuid)` | Parses a canonical UUID string. Returns `null` on malformed input. |
-| `static Uuid7? fromList(List<int> bytes)` | Validates length, version (`7`) and variant (`0b10`). Returns `null` if checks fail. |
-
-| Instance members | Description |
-|------------------|-------------|
-| `Uint8List get bytes` | Returns a **copy** of the internal 16‑byte buffer (immutable). |
-| `@override String toString()` | Returns the canonical UUID string (`xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`). |
-| `@override bool operator ==(Object other)` | Value equality – compares all 16 bytes. |
-| `@override int get hashCode` | Combines the bytes into a 32‑bit hash suitable for `Map`/`Set`. |
 
 ---
 
@@ -81,14 +69,6 @@ The package includes a comprehensive test suite (`test/uuid7_test.dart`). To run
 ```bash
 dart test
 ```
-
-The tests cover:
-
-- Generation validity (length, version, variant, format)
-- Parsing from string and list
-- Equality & `hashCode`
-- Usage as keys in `Map` and members of `Set`
-- Canonical string output
 
 ---
 
