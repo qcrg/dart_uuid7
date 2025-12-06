@@ -7,7 +7,12 @@ import 'dart:typed_data';
 class Uuid7 {
   final Uint8List _data;
 
-  Uuid7(this._data);
+  Uuid7._(this._data);
+
+  factory Uuid7.raw(List<int> bytes) {
+    return Uuid7._(Uint8List.fromList(bytes));
+  }
+
   Uuid7.gen() : _data = Uint8List(16) {
     final rand = Random();
 
@@ -52,7 +57,7 @@ class Uuid7 {
     if (variant != 2) {
       return null;
     }
-    return Uuid7(Uint8List.fromList(bytes));
+    return Uuid7._(Uint8List.fromList(bytes));
   }
 
   @override

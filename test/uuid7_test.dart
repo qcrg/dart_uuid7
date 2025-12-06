@@ -123,7 +123,7 @@ void main() {
         0x8F, 0x00, // variant 0b10xxxxxx
         0x11, 0x22, 0x33, 0x44, 0x55, 0x66,
       ]);
-      final uuid = Uuid7(bytes);
+      final uuid = Uuid7.raw(bytes);
       expect(uuid.toString(), '01234567-89ab-7cde-8f00-112233445566');
     });
   });
