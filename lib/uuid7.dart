@@ -12,7 +12,7 @@ class Uuid7 {
   Uuid7._(this._data);
 
   Uuid7.raw(List<int> bytes) : _data = Uint8List.fromList(bytes) {
-    assert(bytes.length == _uuidLength);
+    assert(Uuid7.fromList(bytes) != null);
   }
 
   Uuid7.gen() : _data = Uint8List(_uuidLength) {
