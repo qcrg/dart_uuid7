@@ -4,26 +4,25 @@ A tiny, zero‑dependency Dart library that generates **UUID v7**
 (time‑ordered, RFC 4122‑compatible) and provides parsing, equality,
 hashing and a convenient string representation.
 
----
+
 
 ## Table of Contents
 - [Features](#features)
-- [Installation](#installation)
 - [Quick start](#quick-start)
-- [API reference](#api-reference)
 - [Testing](#testing)
 - [License](#license)
 
----
+
 
 ## Features
-- **UUID v7 generation** – time‑ordered, 48‑bit Unix‑epoch timestamp + random bits.
+- **UUID v7 creation from raw bytes** - validate data only in debug mode.
+- **UUID v7 generation** - time‑ordered, 48‑bit Unix‑epoch timestamp + random bits.
 - **Parsing** from the canonical string (`xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`) or from a `List<int>`/`Uint8List`.
 - **Value equality** (`==`) and proper `hashCode` so UUIDs can be used as keys in `Map` or members of `Set`.
-- **Immutable** – the internal byte buffer is private; a copy is exposed via `bytes`.
-- **No external dependencies** – works with the Dart SDK alone.
+- **Immutable** - the internal byte buffer is private; a copy is exposed via `bytes`.
+- **No external dependencies** - works with the Dart SDK alone.
 
----
+
 
 ## Quick start
 
@@ -44,7 +43,6 @@ void main() {
   print(map[uuid]); // 'my value'
 
   // Create from raw bytes without validation
-
   final bytes = Uint8List.fromList([
     0x01, 0x23, 0x45, 0x67,
     0x89, 0xAB,
@@ -60,7 +58,7 @@ void main() {
 }
 ```
 
----
+
 
 ## Testing
 
