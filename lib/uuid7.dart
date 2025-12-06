@@ -4,16 +4,18 @@
 import 'dart:math';
 import 'dart:typed_data';
 
+const _uuidLength = 16;
+
 class Uuid7 {
   final Uint8List _data;
 
   Uuid7._(this._data);
 
-  factory Uuid7.raw(List<int> bytes) {
-    return Uuid7._(Uint8List.fromList(bytes));
+  Uuid7.raw(List<int> bytes) : _data = Uint8List.fromList(bytes) {
+    assert(bytes.length == _uuidLength);
   }
 
-  Uuid7.gen() : _data = Uint8List(16) {
+  Uuid7.gen() : _data = Uint8List(_uuidLength) {
     final rand = Random();
 
     final timestamp = DateTime.now().millisecondsSinceEpoch;
@@ -27,7 +29,7 @@ class Uuid7 {
 
     _data[8] = 0x80 | (rand.nextInt(256) & 0x3F);
 
-    for (var i = 9; i < 16; i++) {
+    for (var i = 9; i < _uuidLength; i++) {
       _data[i] = rand.nextInt(256);
     }
   }
@@ -36,8 +38,8 @@ class Uuid7 {
     const uuidStrLen = 36;
     if (uuid.length != uuidStrLen) return null;
     final hex = uuid.replaceAll('-', '');
-    final bytes = Uint8List(16);
-    for (int i = 0; i < 16; i++) {
+    final bytes = Uint8List(_uuidLength);
+    for (int i = 0; i < _uuidLength; i++) {
       final int? tmp = int.tryParse(hex.substring(i * 2, i * 2 + 2), radix: 16);
       if (tmp == null) return null;
       bytes[i] = tmp;
@@ -46,7 +48,7 @@ class Uuid7 {
   }
 
   static Uuid7? fromList(List<int> bytes) {
-    if (bytes.length != 16) {
+    if (bytes.length != _uuidLength) {
       return null;
     }
     final int version = (bytes[6] >> 4) & 0x0F;
@@ -64,7 +66,7 @@ class Uuid7 {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! Uuid7) return false;
-    for (int i = 0; i < 16; i++) {
+    for (int i = 0; i < _uuidLength; i++) {
       if (_data[i] != other._data[i]) return false;
     }
     return true;
@@ -73,7 +75,7 @@ class Uuid7 {
   @override
   int get hashCode {
     int hash = 0;
-    for (int i = 0; i < 16; i += 4) {
+    for (int i = 0; i < _uuidLength; i += 4) {
       final part =
           (_data[i] << 24) |
           (_data[i + 1] << 16) |
